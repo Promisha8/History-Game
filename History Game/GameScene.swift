@@ -20,6 +20,7 @@ class GameScene: SKScene {
     var rulerTitle = SKLabelNode(fontNamed: "Arial")
     var yearTitle = SKLabelNode(fontNamed: "Arial")
     
+    var currentScore : Int = 0
     var vc : GameViewController!
     weak var scrollView: SwiftySKScrollView?
     let moveableNode = SKNode()
@@ -116,21 +117,47 @@ class GameScene: SKScene {
                 cards[row][col].size = CGSize(width: cardWidth!, height: cardHeight!)
                 cards[row][col].position = CGPoint(x: CGFloat(row) * cardWidth! + cardWidth!/2, y: -CGFloat(col) * cardHeight! - cardHeight!/2 - 125)
                 moveableNode.addChild(cards[row][col])
-                var rectangle : CGRect = CGRect(x: CGFloat(row) * cardWidth! / 2, y: CGFloat(col) * cardHeight! / 2, width: 20, height: 20)
-                cards[row][col].field.frame = rectangle
-                cards[row][col].field.borderStyle = UITextBorderStyle.roundedRect
-                cards[row][col].field.textColor = UIColor.black
-                cards[row][col].field.font = UIFont(name: "helvetica", size: 8)
-                cards[row][col].color = UIColor.black
-                self.view?.addSubview(cards[row][col].field)
+                
+                if row != 0
+                {
+                    var rectangle : CGRect = CGRect(x: CGFloat(row) * cardWidth! / 2, y: CGFloat(col) * cardHeight! / 2, width: 20, height: 20)
+                    cards[row][col].field.frame = rectangle
+                    cards[row][col].field.borderStyle = UITextBorderStyle.roundedRect
+                    cards[row][col].field.textColor = UIColor.black
+                    cards[row][col].field.font = UIFont(name: "helvetica", size: 8)
+                    cards[row][col].color = UIColor.black
+                    self.view?.addSubview(cards[row][col].field)
+                    
+                    cards[row][col].field.addTarget(self, action: #selector(GameScene.tapTextField), for: UIControlEvents.editingDidEnd)
+                }
+            }
+        }
+        // Scroll View Stuff
+        
+    }
+    
+    func tapTextField(textField: UITextField) {
+        var i : Int = 0
+        var j : Int = 0
+        for row in 0 ..< cards.count{
+            for col in 0 ..< cards[row].count{
+                if cards[row][col].field == textField
+                {
+                    i = row
+                    j = col
+                }
             }
         }
         
-        
-        
-        
-        // Scroll View Stuff
-        
+        if cards[i][j].correctLetter.contains(textField.text!)
+        {
+            cards[i][j].field.isEnabled = false
+            var index : Int = cards[i][j].correctLetter.index(of: textField.text!)!
+            cards[i][j].correctLetter.remove(at: index)
+            currentScore+=1
+            print(currentScore)
+        }
+
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -153,9 +180,14 @@ class GameScene: SKScene {
         // Called before each frame is rendered
         for row in 0 ..< cards.count{
             for col in 0 ..< cards[row].count{
-                var rectangle : CGRect = CGRect(x: CGFloat(row) * cardWidth! / 2 + cardWidth!, y: (CGFloat(col) * cardHeight!) / 2 - ((scrollView?.contentOffset.y)! / 2), width: 20, height: 20)
+                var rectangle : CGRect = CGRect(x: CGFloat(row) * cardWidth! / 2, y: (CGFloat(col) * cardHeight!) / 2 - ((scrollView?.contentOffset.y)! / 2 - cardHeight! / 2), width: 20, height: 20)
                 cards[row][col].field.frame = rectangle
             }
         }
+    }
+    
+    func getScore() ->Int
+    {
+        return currentScore
     }
 }

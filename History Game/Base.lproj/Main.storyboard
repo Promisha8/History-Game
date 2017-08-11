@@ -128,6 +128,9 @@
                             <constraint firstItem="6pw-43-cde" firstAttribute="top" secondItem="8aa-yV-Osq" secondAttribute="bottom" constant="-20" id="z3K-Y9-Vym"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="currentScoreLabel" destination="iUZ-8x-Sza" id="iiE-gz-0oC"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
             </objects>

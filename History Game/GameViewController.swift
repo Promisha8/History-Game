@@ -12,18 +12,25 @@ import GameplayKit
 
 class GameViewController: UIViewController {
 
+    var timer = Timer()
+    var scene = GameScene()
+    
+    
+    @IBOutlet weak var currentScoreLabel: UILabel!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        scheduledTimerWithTimeInterval()
         if let view = self.view as! SKView? {
             // Load the SKScene from 'GameScene.sks'
-            if let scene = GameScene(fileNamed: "GameScene") {
+                scene = GameScene(fileNamed: "GameScene")!
                 // Set the scale mode to scale to fit the window
                 scene.scaleMode = .aspectFill
                 scene.vc = self
                 // Present the scene
                 view.presentScene(scene)
-            }
+            
             
             view.ignoresSiblingOrder = true
             
@@ -51,5 +58,17 @@ class GameViewController: UIViewController {
 
     override var prefersStatusBarHidden: Bool {
         return true
+    }
+    
+    func scheduledTimerWithTimeInterval(){
+        // Scheduling timer to Call the function "updateCounting" with the interval of 1 seconds
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(GameViewController.updateCounting), userInfo: nil, repeats: true)
+    }
+    
+    
+    func updateCounting(){
+        var score = scene.getScore()
+        
+        currentScoreLabel.text = "Correct Answers: \(score) / 160"
     }
 }
