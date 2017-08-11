@@ -69,6 +69,6 @@ class GameViewController: UIViewController {
     func updateCounting(){
         var score = scene.getScore()
         
-        currentScoreLabel.text = "Correct Answers: \(score) / 160"
+        currentScoreLabel.text = "Correct: \(score)/160"
     }
 }

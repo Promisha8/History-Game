@@ -103,19 +103,19 @@ class GameScene: SKScene {
         
         
         
-        scrollView = SwiftySKScrollView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height), moveableNode: moveableNode, direction: .vertical)
+        scrollView = SwiftySKScrollView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height - cardHeight!/2), moveableNode: moveableNode, direction: .vertical)
         scrollView?.contentSize = CGSize(width: scrollView!.frame.width, height: CGFloat(cards[0].count) * cardHeight!)
         
         view.addSubview(scrollView!)
         
-        var topSpace = NSLayoutConstraint(item: scrollView!, attribute: .top, relatedBy: .equal, toItem: vc.topLayoutGuide, attribute: .top, multiplier: 1.0, constant: 100.0).isActive = true
+        //var topSpace = NSLayoutConstraint(item: scrollView!, attribute: .top, relatedBy: .equal, toItem: vc.topLayoutGuide, attribute: .top, multiplier: 1.0, constant: 100.0).isActive = true
         //view.addConstraint(topSpace)
         
         
         for row in 0 ..< cards.count{
             for col in 0 ..< cards[row].count{
                 cards[row][col].size = CGSize(width: cardWidth!, height: cardHeight!)
-                cards[row][col].position = CGPoint(x: CGFloat(row) * cardWidth! + cardWidth!/2, y: -CGFloat(col) * cardHeight! - cardHeight!/2 - 125)
+                cards[row][col].position = CGPoint(x: CGFloat(row) * cardWidth! + cardWidth!/2, y: -CGFloat(col) * cardHeight! - cardHeight!/2 - 150)
                 moveableNode.addChild(cards[row][col])
                 
                 if row != 0
@@ -186,7 +186,7 @@ class GameScene: SKScene {
         }
     }
     
-    func getScore() ->Int
+    func getScore()->Int
     {
         return currentScore
     }
